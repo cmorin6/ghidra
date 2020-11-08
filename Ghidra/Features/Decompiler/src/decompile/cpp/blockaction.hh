@@ -196,6 +196,7 @@ class CollapseStructure {
   list<LoopBody>::iterator loopbodyiter;	///< Current (innermost) loop being structured
   BlockGraph &graph;				///< The control-flow graph
   int4 dataflow_changecount;			///< Number of data-flow changes made during structuring
+  bool use_noreturn_heuristics;			///< Option to enable heuristic for rule ruleBlockIfNoExit
   bool checkSwitchSkips(FlowBlock *switchbl,FlowBlock *exitblock);
   void onlyReachableFromRoot(FlowBlock *root,vector<FlowBlock *> &body);
   int4 markExitsAsGotos(vector<FlowBlock *> &body);	///< Mark edges exiting the body as \e unstructured gotos
@@ -222,6 +223,7 @@ public:
   CollapseStructure(BlockGraph &g);		///< Construct given a control-flow graph
   int4 getChangeCount(void) const { return dataflow_changecount; }	///< Get number of data-flow changes
   void collapseAll(void);			///< Run the whole algorithm
+  void setUseNoreturnHeuristics(bool use_noreturn_heuristics) {this->use_noreturn_heuristics=use_noreturn_heuristics;};
 };
 
 /// \brief Discover and eliminate \e split conditions

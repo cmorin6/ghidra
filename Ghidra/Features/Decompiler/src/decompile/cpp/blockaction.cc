@@ -1504,6 +1504,11 @@ bool CollapseStructure::ruleBlockIfNoExit(FlowBlock *bl)
 int4 CollapseStructure::selectBestNoExit(FlowBlock *clause0,FlowBlock *clause1)
 
 {
+  // if heuristics are disabled return 0 (default behavior)
+  if(!use_noreturn_heuristics){
+      return 0;
+  }
+
   // select lowest block depth
   int4 depth0 = clause0->getBlockDepth();
   int4 depth1 = clause1->getBlockDepth();
@@ -1893,6 +1898,7 @@ CollapseStructure::CollapseStructure(BlockGraph &g)
   : graph(g)
 {
   dataflow_changecount = 0;
+  use_noreturn_heuristics = true;
 }
 
 /// Collapse everything in the control-flow graph to isolated blocks with no inputs and outputs.
@@ -2200,6 +2206,7 @@ int4 ActionBlockStructure::apply(Funcdata &data)
   graph.buildCopy(data.getBasicBlocks());
 
   CollapseStructure collapse(graph);
+  collapse.setUseNoreturnHeuristics(data.getArch()->use_noreturn_heuristics);
   collapse.collapseAll();
   count += collapse.getChangeCount();
 

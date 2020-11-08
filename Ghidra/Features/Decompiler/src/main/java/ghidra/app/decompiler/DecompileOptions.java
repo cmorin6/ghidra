@@ -276,6 +276,12 @@ public class DecompileOptions { //
 			+"block into 'else if(...) {'.";
 	private final static boolean MERGE_ELSE_IF_DEFAULT = true;
 	private boolean mergeElseIf;
+	
+	private final static String NORETURN_HEURISTICS_STRING = "Analysis.Use no return heuristics";
+	private final static String NORETURN_HEURISTICS_DESCRIPTION ="Merge nested 'else { if(...) {' "
+			+"block into 'else if(...) {'.";
+	private final static boolean NORETURN_HEURISTICS_DEFAULT = true;
+	private boolean useNoReturnHeuristics;
 
 	private final static String CACHED_RESULTS_SIZE_MSG = "Cache Size (Functions)";
 	private final static int SUGGESTED_CACHED_RESULTS_SIZE = 10;
@@ -339,6 +345,7 @@ public class DecompileOptions { //
 		payloadLimitMBytes = SUGGESTED_MAX_PAYLOAD_BYTES;
 		cachedResultsSize = SUGGESTED_CACHED_RESULTS_SIZE;
 		mergeElseIf = MERGE_ELSE_IF_DEFAULT;
+		useNoReturnHeuristics = NORETURN_HEURISTICS_DEFAULT;
 	}
 
 	/**
@@ -402,6 +409,7 @@ public class DecompileOptions { //
 		payloadLimitMBytes = opt.getInt(PAYLOAD_LIMIT, SUGGESTED_MAX_PAYLOAD_BYTES);
 		cachedResultsSize = opt.getInt(CACHED_RESULTS_SIZE_MSG, SUGGESTED_CACHED_RESULTS_SIZE);
 		mergeElseIf = opt.getBoolean(MERGE_ELSE_IF_STRING, MERGE_ELSE_IF_DEFAULT);
+		useNoReturnHeuristics = opt.getBoolean(NORETURN_HEURISTICS_STRING, NORETURN_HEURISTICS_DEFAULT);
 
 		grabFromToolOptions(ownerPlugin);
 	}
@@ -547,6 +555,8 @@ public class DecompileOptions { //
 			CACHE_RESULTS_DESCRIPTION);
 		opt.registerOption(MERGE_ELSE_IF_STRING, MERGE_ELSE_IF_DEFAULT, help,
 				MERGE_ELSE_IF_DESCRIPTION);
+		opt.registerOption(NORETURN_HEURISTICS_STRING, NORETURN_HEURISTICS_DEFAULT, help,
+				NORETURN_HEURISTICS_DESCRIPTION);
 		grabFromToolAndProgram(ownerPlugin, opt, program);
 	}
 
@@ -628,6 +638,7 @@ public class DecompileOptions { //
 
 		appendOption(buf, "protoeval", protoEvalModel, "", "");
 		appendOption(buf, "mergeElseIf", mergeElseIf ? "on" : "off", "", "");
+		appendOption(buf, "noreturn_heuristics", useNoReturnHeuristics ? "on" : "off", "", "");
 		buf.append("</optionslist>\n");
 		return buf.toString();
 	}

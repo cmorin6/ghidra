@@ -94,6 +94,7 @@ Architecture::Architecture(void)
   aggressive_ext_trim = false;
   readonlypropagate = false;
   infer_pointers = true;
+  use_noreturn_heuristics = true;
   pointer_lowerbound = 0x1000;
   funcptr_align = 0;
   flowoptions = 0;

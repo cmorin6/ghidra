@@ -265,4 +265,10 @@ public:
   virtual string apply(Architecture *glb,const string &p1,const string &p2,const string &p3) const;
 };
 
+class OptionNoReturnHeuristics : public ArchOption {
+public:
+  OptionNoReturnHeuristics(void) { name = "noreturn_heuristics"; }	///< Constructor
+  virtual string apply(Architecture *glb,const string &p1,const string &p2,const string &p3) const;
+};
+
 #endif

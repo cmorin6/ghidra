@@ -2367,6 +2367,7 @@ void IfcStructureBlocks::execute(istream &s)
     resultgraph.calcForwardDominator(rootlist);
 
     CollapseStructure collapse(resultgraph);
+    collapse.setUseNoreturnHeuristics(dcp->conf->use_noreturn_heuristics);
     collapse.collapseAll();
 
     ofstream sout;

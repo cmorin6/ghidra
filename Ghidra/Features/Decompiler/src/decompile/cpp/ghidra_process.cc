@@ -345,6 +345,9 @@ void StructureGraph::rawAction(void)
   resultgraph.calcForwardDominator(rootlist);
 
   CollapseStructure collapse(resultgraph);
+  if(ghidra!=NULL){
+      collapse.setUseNoreturnHeuristics(ghidra->use_noreturn_heuristics);
+  }
   collapse.collapseAll();
   resultgraph.orderBlocks();
 

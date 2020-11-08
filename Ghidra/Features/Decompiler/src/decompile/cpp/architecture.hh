@@ -126,6 +126,7 @@ public:
   bool aggressive_ext_trim;	///< Aggressively trim inputs that look like they are sign extended
   bool readonlypropagate;	///< true if readonly values should be treated as constants
   bool infer_pointers;		///< True if we should infer pointers from constants that are likely addresses
+  bool use_noreturn_heuristics;  ///< enables heuristic for rule ruleBlockIfNoExit in CollapseStructure
   uintb pointer_lowerbound;	///< Zero or lowest value that can be inferred as an address
   int4 funcptr_align;		///< How many bits of alignment a function ptr has
   uint4 flowoptions;            ///< options passed to flow following engine

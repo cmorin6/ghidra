@@ -80,6 +80,7 @@ OptionDatabase::OptionDatabase(Architecture *g)
   registerOption(new OptionJumpLoad());
   registerOption(new OptionToggleRule());
   registerOption(new OptionMergeElseIf());
+  registerOption(new OptionNoReturnHeuristics());
 }
 
 OptionDatabase::~OptionDatabase(void)
@@ -799,4 +800,21 @@ string OptionMergeElseIf::apply(Architecture *glb,const string &p1,const string 
   string prop;
   prop = val ? "on" : "off";
   return "merge else if turned "+prop;
+}
+
+/// \class OptionNoExitHeuristics
+/// \brief Toggle whether heuristics are used to select best noreturn branch.
+string OptionNoReturnHeuristics::apply(Architecture *glb,const string &p1,const string &p2,const string &p3) const
+
+{
+  bool val = onOrOff(p1);
+  string prop;
+  if (val) {
+    glb->use_noreturn_heuristics = true;
+  }
+  else {
+    glb->use_noreturn_heuristics = false;
+  }
+  prop = val ? "on" : "off";
+  return "noreturn heuristics turned "+prop;
 }

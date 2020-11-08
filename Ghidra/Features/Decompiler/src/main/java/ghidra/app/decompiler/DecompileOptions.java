@@ -270,6 +270,12 @@ public class DecompileOptions { //
 	final static String FONT_MSG = "Display.Font";
 	final static Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	private Font defaultFont;
+	
+	private final static String MERGE_ELSE_IF_STRING = "Display.Merge else if blocks";
+	private final static String MERGE_ELSE_IF_DESCRIPTION ="Merge nested 'else { if(...) {' "
+			+"block into 'else if(...) {'.";
+	private final static boolean MERGE_ELSE_IF_DEFAULT = true;
+	private boolean mergeElseIf;
 
 	private final static String CACHED_RESULTS_SIZE_MSG = "Cache Size (Functions)";
 	private final static int SUGGESTED_CACHED_RESULTS_SIZE = 10;
@@ -332,6 +338,7 @@ public class DecompileOptions { //
 		decompileTimeoutSeconds = SUGGESTED_DECOMPILE_TIMEOUT_SECS;
 		payloadLimitMBytes = SUGGESTED_MAX_PAYLOAD_BYTES;
 		cachedResultsSize = SUGGESTED_CACHED_RESULTS_SIZE;
+		mergeElseIf = MERGE_ELSE_IF_DEFAULT;
 	}
 
 	/**
@@ -394,6 +401,7 @@ public class DecompileOptions { //
 		decompileTimeoutSeconds = opt.getInt(DECOMPILE_TIMEOUT, SUGGESTED_DECOMPILE_TIMEOUT_SECS);
 		payloadLimitMBytes = opt.getInt(PAYLOAD_LIMIT, SUGGESTED_MAX_PAYLOAD_BYTES);
 		cachedResultsSize = opt.getInt(CACHED_RESULTS_SIZE_MSG, SUGGESTED_CACHED_RESULTS_SIZE);
+		mergeElseIf = opt.getBoolean(MERGE_ELSE_IF_STRING, MERGE_ELSE_IF_DEFAULT);
 
 		grabFromToolOptions(ownerPlugin);
 	}
@@ -537,6 +545,8 @@ public class DecompileOptions { //
 			"Current variable highlight");
 		opt.registerOption(CACHED_RESULTS_SIZE_MSG, SUGGESTED_CACHED_RESULTS_SIZE, help,
 			CACHE_RESULTS_DESCRIPTION);
+		opt.registerOption(MERGE_ELSE_IF_STRING, MERGE_ELSE_IF_DEFAULT, help,
+				MERGE_ELSE_IF_DESCRIPTION);
 		grabFromToolAndProgram(ownerPlugin, opt, program);
 	}
 
@@ -617,6 +627,7 @@ public class DecompileOptions { //
 		appendOption(buf, "setlanguage", displayLanguage.toString(), "", "");
 
 		appendOption(buf, "protoeval", protoEvalModel, "", "");
+		appendOption(buf, "mergeElseIf", mergeElseIf ? "on" : "off", "", "");
 		buf.append("</optionslist>\n");
 		return buf.toString();
 	}

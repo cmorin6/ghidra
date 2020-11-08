@@ -100,6 +100,7 @@ PrintC::PrintC(Architecture *g,const string &nm) : PrintLanguage(g,nm)
   option_nocasts = false;
   option_unplaced = false;
   option_hide_exts = true;
+  option_merge_else_if = true;
   nullToken = "NULL";
   
   // Set the flip tokens
@@ -2501,6 +2502,10 @@ void PrintC::emitBlockCondition(const BlockCondition *bl)
 bool PrintC::isSafeForMerge(const BlockIf *bl)
 
 {
+  // prevent merging if option_merge_else_if is set to false.
+  if(!option_merge_else_if){
+      return false;
+  }
   // note: This checks if there is anything printed before
   // the "if" because merging such a BlockIf would break
   // the syntax.

@@ -79,6 +79,7 @@ OptionDatabase::OptionDatabase(Architecture *g)
   registerOption(new OptionSetLanguage());
   registerOption(new OptionJumpLoad());
   registerOption(new OptionToggleRule());
+  registerOption(new OptionMergeElseIf());
 }
 
 OptionDatabase::~OptionDatabase(void)
@@ -783,4 +784,19 @@ string OptionToggleRule::apply(Architecture *glb,const string &p1,const string &
     res += " rule";
   }
   return res;
+}
+
+/// \class OptionMergeElseIf
+/// \brief Toggle whether nested "else { if(...) { " statements should be merged as "else if (...) {"
+string OptionMergeElseIf::apply(Architecture *glb,const string &p1,const string &p2,const string &p3) const
+
+{
+  bool val = onOrOff(p1);
+  if (glb->print->getName() != "c-language")
+    return "Only c-language accepts the merge else if option";
+  PrintC *lng = (PrintC *)glb->print;
+  lng->setMergeElseIf(val);
+  string prop;
+  prop = val ? "on" : "off";
+  return "merge else if turned "+prop;
 }
